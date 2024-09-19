@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WCAG Violations Example with Shadow DOM</title>
+    <style>
+        body {
+            background-color: #fefefe;
+            color: #fff; /* Poor color contrast */
+            font-family: Arial, sans-serif;
+            min-height: 2000px; /* Content exceeds 1900px */
+        }
+        .container {
+            margin: 50px;
+        }
+        .invisible-focus {
+            outline: none;
+        }
+        button {
+            background-color: #e5e5e5; /* Low contrast button */
+            color: #ccc;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        /* Shadow Host Styles */
+        #shadow-host {
+            display: block;
+            margin-top: 50px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Example Page with WCAG Violations</h1>
+        <p>This page demonstrates several common WCAG violations, including poor color contrast, missing alt attributes, and form controls without labels.</p>
+        
+        <!-- Image with missing alt attribute -->
+        <img src="image.jpg">
+        
+        <!-- Form without labels -->
+        <form>
+            <input type="text" placeholder="Enter your name" class="invisible-focus">
+            <button type="submit">Submit</button>
+        </form>
+        
+        <!-- Shadow DOM Host -->
+        <div id="shadow-host"></div>
+    </div>
+
+    <script>
+        // Attach Shadow DOM to the host
+        const shadowHost = document.getElementById('shadow-host');
+        const shadowRoot = shadowHost.attachShadow({ mode: 'open' });
+
+        // Shadow DOM content
+        shadowRoot.innerHTML = `
+            <style>
+                .shadow-button {
+                    background-color: #222; /* Poor contrast */
+                    color: #444;
+                    border: none;
+                    padding: 10px;
+                    cursor: pointer;
+                }
+                p {
+                    color: #bbb; /* Low contrast */
+                }
+            </style>
+            <div>
+                <h2>Shadow DOM Section</h2>
+                <p>This content is inside the Shadow DOM.</p>
+                <button class="shadow-button">Shadow Button</button>
+            </div>
+        `;
+    </script>
+</body>
+</html>
