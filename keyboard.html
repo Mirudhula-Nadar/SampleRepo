@@ -1,0 +1,89 @@
+<html>
+    <head>
+        <title>
+            Keyboard Elements AT Example
+        </title>
+        <script src="../js/axe.min.js"></script>
+        <script src="../js/a11y-engine.min.js"></script>
+        <script src="../js/configure.js"></script>
+        <style>
+            body {
+              font-family: Arial, sans-serif;
+              margin: 20px;
+            }
+            .tabbable {
+              margin: 10px 0;
+              padding: 10px;
+              border: 1px solid #ccc;
+              cursor: pointer;
+            }
+            .tabbable:hover {
+              background-color: #f0f0f0;
+            }
+          </style>
+    </head>
+    <body>
+    <br/>
+    <br/>
+    <main id="main">
+        
+        <h1>Tabbable Elements Example</h1>
+        <button class="tabbable" tabindex="0">
+          This is a regular tabbable element.
+        </button>
+    
+        <button
+          class="tabbable"
+          tabindex="0"
+          onfocus="openUrl('https://www.example.com')"
+        >
+          Open Example.com
+        </button>
+        <br/>
+        <div>
+            
+        <button
+          class="tabbable"
+          tabindex="0"
+          onfocus="openUrl('https://www.openai.com')"
+        >
+          Open OpenAI.com
+        </button>
+        <button class="tabbable" tabindex="0">
+          Another regular tabbable element.
+        </button>
+        </div>
+        <br/>
+        <div>
+        <button
+          class="tabbable"
+          tabindex="0"
+          onfocus="openUrl('https://github.com')"
+        >
+          Open GitHub.com
+        </button>
+        <button
+          class="tabbable"
+          tabindex="0"
+          onfocus="openUrl('https://flipkart.com')"
+        >
+          Open flipkart.com
+        </button>
+        <button
+          class="tabbable"
+          tabindex="0"
+          onfocus="openUrl('https://walmart.com')"
+        >
+          Open walmart.com
+        </button>
+    </div>
+        <script>
+            function openUrl(url) {
+              window.open(url, "_blank");
+            }
+          </script>
+    </main>
+    <footer>
+    </footer>
+    </body>
+</html>
