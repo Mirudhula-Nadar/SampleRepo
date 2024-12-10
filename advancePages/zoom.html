@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>200% Zoom Issues</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    header {
+      background-color: #333;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      width: 100%; /* Content doesn't adapt */
+    }
+    nav {
+      background-color: #444;
+      color: white;
+      width: 600px; /* Fixed width for the navigation bar */
+      overflow: hidden; /* Hides overflow content */
+      white-space: nowrap; /* Prevents line breaks */
+      padding: 10px;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-right: 15px;
+    }
+    .content {
+      display: flex;
+      flex-wrap: nowrap; /* Prevents wrapping */
+      gap: 10px;
+    }
+    .fixed-section {
+      width: 300px; /* Fixed width for zoom issue */
+      height: 400px; /* Fixed height for zoom issue */
+      overflow: hidden; /* Truncates content */
+      background-color: #f4f4f4;
+      padding: 10px;
+    }
+    .non-responsive-table {
+      width: 500px; /* Fixed width for table */
+      margin: 20px 0;
+    }
+    .non-responsive-table td {
+      width: 250px; /* Fixed cell width */
+      overflow: hidden;
+    }
+    .non-responsive-image {
+      width: 600px; /* Fixed image width */
+      height: auto;
+    }
+    .footer {
+      background-color: #444;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      position: fixed; /* Fixed position footer */
+      bottom: 0;
+      width: 100%; /* Content doesn't adapt */
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Zoom Test Page</h1>
+  </header>
+  <nav>
+    <a href="#section1">Section 1</a>
+    <a href="#section2">Section 2</a>
+    <a href="#section3">Section 3</a>
+  </nav>
+  <main class="content">
+    <div class="fixed-section">
+      <h2>Section 1</h2>
+      <p>This section has a fixed width and height, causing truncation at 200% zoom.</p>
+      <img src="example.jpg" alt="Example Image" class="non-responsive-image">
+    </div>
+    <div class="fixed-section">
+      <h2>Section 2</h2>
+      <table class="non-responsive-table" border="1">
+        <tr>
+          <td>Column 1</td>
+          <td>Column 2</td>
+        </tr>
+        <tr>
+          <td>Data 1</td>
+          <td>Data 2</td>
+        </tr>
+      </table>
+    </div>
+    <div class="fixed-section">
+      <h2>Section 3</h2>
+      <p>Fixed font size text and non-flexible layout.</p>
+      <p style="font-size: 12px;">This text has a fixed font size and does not scale.</p>
+    </div>
+  </main>
+  <footer class="footer">
+    <p>Footer content does not adapt.</p>
+  </footer>
+</body>
+</html>
