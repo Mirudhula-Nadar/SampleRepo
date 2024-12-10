@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+    }
+    header {
+      background-color: #333; /* Low contrast with text */
+      color: #555; /* Insufficient contrast for AAA compliance */
+      padding: 10px;
+      text-align: center;
+    }
+    nav {
+      width: 600px; /* Fixed width for the navigation bar */
+      overflow: hidden; /* Hides overflow content */
+      white-space: nowrap; /* Prevents line breaks */
+      background-color: #444; /* Low contrast */
+      color: #888; /* Insufficient contrast with background */
+      padding: 10px;
+    }
+    nav a {
+      color: #777; /* Low contrast */
+      text-decoration: none;
+      margin-right: 15px;
+    }
+    .content {
+      font-size: 16px;
+      width: 300px; /* Fixed width for zoom issue */
+    }
+    .fixed-table {
+      width: 500px; /* Fixed table width */
+      margin-top: 20px;
+    }
+    .fixed-table td {
+      width: 250px; /* Fixed cell width */
+    }
+    footer {
+      text-align: center;
+      margin-top: 20px;
+    }
+    iframe {
+      border: none;
+      width: 100%;
+      height: 300px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Website Home</h1>
+  </header>
+  <nav>
+    <!-- Navigation has insufficient contrast -->
+    <a href="index.html" tabindex="3">Home</a>
+    <a href="about.html" tabindex="1">About</a> <!-- Incorrect tabindex disrupts focus order -->
+    <a href="contact.html" tabindex="2">Contact</a>
+  </nav>
+  <main>
+    <div class="content">
+      <p>Welcome to the homepage. This content will overflow when zoomed in.</p>
+      <iframe src="../accessible.html"></iframe>
+      <!-- Frame missing a title attribute -->
+    </div>
+    <table class="fixed-table" border="1">
+      <caption>Data Table</caption>
+      <thead>
+        <tr>
+          <th>Column 1</th>
+          <th>Column 2</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cell 1</td>
+          <td>Cell 2</td>
+        </tr>
+        <tr>
+          <td>Cell 3</td>
+          <td>Cell 4</td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+  <footer>
+    <a href="contact.html">Contact Us</a>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WCAG Violations - Cognitive CAPTCHA</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #333;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      background-color: #444;
+    }
+    nav ul li {
+      margin: 0 15px;
+    }
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+    }
+    main {
+      padding: 20px;
+    }
+    .captcha-section {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+    }
+    .captcha-section h2 {
+      margin-bottom: 15px;
+    }
+    .captcha {
+      margin-top: 20px;
+    }
+    .captcha img {
+      margin-bottom: 10px;
+    }
+    .captcha input {
+      margin-bottom: 10px;
+    }
+    footer {
+      text-align: center;
+      padding: 10px;
+      background-color: #333;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Accessible Website</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h2>Welcome to Our Website</h2>
+    <p>This page demonstrates WCAG violations involving cognitive CAPTCHAs.</p>
+
+    <!-- Section 1: Math-Based CAPTCHA -->
+    <section class="captcha-section">
+      <h2>Math-Based CAPTCHA</h2>
+      <p>Solve the following math problem to proceed:</p>
+      <form>
+        <label for="math-captcha">What is 25 * 4?</label>
+        <input type="text" id="math-captcha" name="math-captcha" aria-label="Solve this math problem">
+        <button type="submit">Submit</button>
+      </form>
+      <p class="violation" style="color: red;">This CAPTCHA violates WCAG by requiring cognitive effort to solve a math problem.</p>
+    </section>
+
+    <!-- Section 2: Image-Based CAPTCHA -->
+    <section class="captcha-section">
+      <h2>Image-Based CAPTCHA</h2>
+      <p>Select all images with a dog:</p>
+      <div class="captcha">
+        <img src="dog1.jpg" alt="Option 1" aria-label="Dog">
+        <img src="cat.jpg" alt="Option 2" aria-label="Cat">
+        <img src="dog2.jpg" alt="Option 3" aria-label="Dog">
+        <img src="car.jpg" alt="Option 4" aria-label="Car">
+      </div>
+      <form>
+        <label for="image-captcha">Enter image numbers (e.g., 1,3):</label>
+        <input type="text" id="image-captcha" name="image-captcha">
+        <button type="submit">Submit</button>
+      </form>
+      <p class="violation" style="color: red;">This CAPTCHA is inaccessible for users with cognitive and visual impairments.</p>
+    </section>
+
+    <!-- Section 3: Text Puzzle CAPTCHA -->
+    <section class="captcha-section">
+      <h2>Text Puzzle CAPTCHA</h2>
+      <p>Unscramble the following word:</p>
+      <form>
+        <label for="word-captcha">Word: "AETCLUPN"></label>
+        <input type="text" id="word-captcha" name="word-captcha">
+        <button type="submit">Submit</button>
+      </form>
+      <p class="violation" style="color: red;">This CAPTCHA requires cognitive effort to unscramble a word, violating WCAG guidelines.</p>
+    </section>
+
+    <!-- Section 4: Audio-Based CAPTCHA -->
+    <section class="captcha-section">
+      <h2>Audio-Based CAPTCHA</h2>
+      <p>Listen to the audio and type the spoken word:</p>
+      <audio controls>
+        <source src="audio-captcha.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+      <form>
+        <label for="audio-captcha">Type the word:</label>
+        <input type="text" id="audio-captcha" name="audio-captcha">
+        <button type="submit">Submit</button>
+      </form>
+      <p class="violation" style="color: red;">Audio CAPTCHAs can exclude users with hearing or cognitive impairments.</p>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2024 Accessible Website</p>
+  </footer>
+</body>
+</html>

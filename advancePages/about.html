@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+    }
+    nav {
+      background-color: #444;
+      color: white;
+      width: 150px;
+      height: 100vh;
+      padding: 20px;
+    }
+    nav a {
+      display: block;
+      margin: 10px 0;
+      color: white;
+      text-decoration: none;
+    }
+    .content {
+      margin-left: 20px;
+      font-size: 16px;
+      width: 300px; /* Fixed width for zoom issue */
+      height: 200px; /* Fixed height for zoom issue */
+      overflow: hidden; /* Truncates content */
+    }
+    .non-responsive-image {
+      width: 600px; /* Fixed image width */
+      height: auto;
+      margin-top: 20px;
+    }
+    .fixed-font {
+      font-size: 16px; /* Fixed font size */
+      margin-top: 20px;
+    }
+    .low-contrast {
+      color: #888; /* Poor contrast */
+      background-color: #eee; /* Low contrast combination */
+      padding: 10px;
+      margin-top: 20px;
+    }
+    button {
+      margin-top: 10px;
+    }
+    .hidden-focus:focus {
+      outline: none; /* Removes focus indication */
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <!-- Missing aria-label or role for navigation -->
+    <a href="about.html">About</a>
+    <a href="index.html">Home</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="content">
+    <h1>About Us</h1>
+    <p>This is the about page. Navigation menu is placed differently.</p>
+
+    <!-- Image with no alt attribute -->
+    <img src="example.jpg" class="non-responsive-image">
+
+    <!-- Text with fixed font size and low contrast -->
+    <p class="fixed-font low-contrast">This text has a fixed font size and poor color contrast.</p>
+
+    <!-- Unlabelled button -->
+    <button class="hidden-focus">Submit</button>
+    <p>Unlabelled button without focus visibility.</p>
+
+    <!-- Form with missing labels -->
+    <form>
+      <input type="text" placeholder="Enter name"><br>
+      <input type="email" placeholder="Enter email"><br>
+      <button type="submit">Submit</button>
+    </form>
+
+    <!-- Non-descriptive link text -->
+    <a href="document.pdf">Click here</a>
+    <p>Non-descriptive link text "Click here" violates best practices.</p>
+  </div>
+</body>
+</html>
