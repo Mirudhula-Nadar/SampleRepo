@@ -3,27 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>200% Zoom Issues</title>
+  <title>Accessibility Issues Demo</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      overflow-x: hidden;
     }
     header {
       background-color: #333;
       color: white;
-      padding: 10px;
       text-align: center;
-      width: 100%; /* Content doesn't adapt */
+      padding: 10px;
     }
     nav {
+      width: 600px; /* Fixed width */
+      overflow: hidden; /* Hides overflow */
+      white-space: nowrap; /* Prevents wrapping */
       background-color: #444;
       color: white;
-      width: 600px; /* Fixed width for the navigation bar */
-      overflow: hidden; /* Hides overflow content */
-      white-space: nowrap; /* Prevents line breaks */
       padding: 10px;
     }
     nav a {
@@ -35,73 +33,95 @@
       display: flex;
       flex-wrap: nowrap; /* Prevents wrapping */
       gap: 10px;
+      margin: 20px;
     }
-    .fixed-section {
-      width: 300px; /* Fixed width for zoom issue */
-      height: 400px; /* Fixed height for zoom issue */
-      overflow: hidden; /* Truncates content */
+    .fixed-box {
+      width: 300px; /* Fixed width */
+      height: 150px; /* Fixed height */
       background-color: #f4f4f4;
+      overflow: hidden; /* Hides overflow */
       padding: 10px;
+      position: relative;
+      white-space: nowrap; /* Prevents text breaking */
     }
-    .non-responsive-table {
-      width: 500px; /* Fixed width for table */
-      margin: 20px 0;
+    .fixed-box p {
+      overflow: hidden; /* Further truncates overflowing text */
+      text-overflow: ellipsis; /* Adds ellipsis to cut-off text */
     }
-    .non-responsive-table td {
-      width: 250px; /* Fixed cell width */
-      overflow: hidden;
+    .non-breaking {
+      white-space: nowrap; /* Ensures text does not wrap */
+      overflow: hidden; /* Hides overflow */
     }
-    .non-responsive-image {
-      width: 600px; /* Fixed image width */
-      height: auto;
+    .overlapping {
+      position: absolute;
+      top: 100px;
+      left: 50px;
+      width: 200px;
+      height: 100px;
+      background-color: rgba(255, 0, 0, 0.5);
+      z-index: 1;
     }
-    .footer {
+    .form {
+      margin: 20px;
+    }
+    .form label {
+      display: block;
+    }
+    .form input[type="text"] {
+      width: 300px; /* Fixed width */
+    }
+    footer {
       background-color: #444;
       color: white;
       text-align: center;
       padding: 10px;
-      position: fixed; /* Fixed position footer */
-      bottom: 0;
-      width: 100%; /* Content doesn't adapt */
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Zoom Test Page</h1>
+    <h1>Accessibility Issues Page</h1>
   </header>
   <nav>
-    <a href="#section1">Section 1</a>
-    <a href="#section2">Section 2</a>
-    <a href="#section3">Section 3</a>
+    <a href="#section1">Section&nbsp;1</a>
+    <a href="#section2">Section&nbsp;2</a>
+    <a href="#section3">Section&nbsp;3</a>
   </nav>
-  <main class="content">
-    <div class="fixed-section">
-      <h2>Section 1</h2>
-      <p>This section has a fixed width and height, causing truncation at 200% zoom.</p>
-      <img src="example.jpg" alt="Example Image" class="non-responsive-image">
+  <main>
+    <div class="content">
+      <div class="fixed-box">
+        <p>This&nbsp;text&nbsp;does&nbsp;not&nbsp;break&nbsp;and&nbsp;overflows&nbsp;at&nbsp;200%&nbsp;zoom.</p>
+        <div class="overlapping">Overlapping content</div>
+      </div>
+      <div class="fixed-box">
+        <p>Another&nbsp;box&nbsp;with&nbsp;content&nbsp;that&nbsp;fails&nbsp;to&nbsp;adjust&nbsp;to&nbsp;zoom.</p>
+      </div>
     </div>
-    <div class="fixed-section">
-      <h2>Section 2</h2>
-      <table class="non-responsive-table" border="1">
+    <section id="section1" class="form">
+      <h2>Form with Accessibility Issues</h2>
+      <form>
+        <label for="username">Username:</label>
+        <input type="text" id="username">
+        <input type="submit" value="Submit">
+      </form>
+    </section>
+    <section id="section2">
+      <h2>Non-Responsive Table</h2>
+      <table border="1" style="width: 500px;"> <!-- Fixed table width -->
         <tr>
-          <td>Column 1</td>
-          <td>Column 2</td>
+          <td>Header&nbsp;1</td>
+          <td>Header&nbsp;2</td>
         </tr>
         <tr>
-          <td>Data 1</td>
-          <td>Data 2</td>
+          <td>Data&nbsp;1</td>
+          <td>Data&nbsp;2</td>
         </tr>
       </table>
-    </div>
-    <div class="fixed-section">
-      <h2>Section 3</h2>
-      <p>Fixed font size text and non-flexible layout.</p>
-      <p style="font-size: 12px;">This text has a fixed font size and does not scale.</p>
-    </div>
+    </section>
   </main>
-  <footer class="footer">
-    <p>Footer content does not adapt.</p>
+  <footer>
+    <p>Footer&nbsp;content&nbsp;fails&nbsp;to&nbsp;adapt&nbsp;when&nbsp;zoomed&nbsp;in.</p>
   </footer>
 </body>
 </html>
