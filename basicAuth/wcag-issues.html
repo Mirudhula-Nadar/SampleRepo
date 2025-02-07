@@ -1,0 +1,324 @@
+
+<html>
+  <head>
+      <title>
+       Basic Auth Website
+      </title>
+      <style>
+          a {
+              outline-color: transparent;
+              text-decoration: none;
+              padding: 2px 1px 0;
+          }
+
+          .focus-order-broken a {
+              margin-left: 0.75em;
+          }
+          
+          .focus-order-broken .first, 
+          .focus-order-broken .third {
+              float: left;
+          }
+          
+          .focus-order-broken .second {
+              float: right;
+          }
+
+      </style>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      <meta http-equiv="refresh" content="80000">
+  </head>
+  <body>
+  <main id="main">
+      <!-- menu-landmark violation code -->
+      <div class="menu">
+          <a href="#">Logo</a>
+          <a href="/menu1" style="position: absolute; right: 0"> Item1 </a>
+          <!-- role-required-menu needs review violation code added with onclick event -->
+          <div class="menu-class">
+              <div class="menu-item" onclick="openNewTab()" style="position: absolute; right: 0">Item2</div>
+          </div>
+      </div>
+      <br/>
+      <!-- search-landmark violation code -->
+      <div class="SearchInputForm" style="position: absolute; right: 0">
+          <input id="search-input" type="text" placeholder="Search this page">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16" tabindex="-1">
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+          </svg>
+      </div>
+      <br/>
+      <br/>
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#website">WebSiteName</a>
+          </div>
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#home">Home</a></li>
+            <li><a href="#page4">Page 4</a></li>
+            <li><a href="#page3">Page 3</a></li>
+            <li><a href="#page2">Page 2</a></li>
+          </ul>
+        </div>
+      </nav>
+      <h2>The fieldset element</h2>
+      <form action="/action_page.php">
+          <fieldset>
+              <input type="radio" id="html" name="fav_language" value="HTML">
+              <label>HTML</label><br>
+              <input type="radio" id="css" name="fav_language" value="CSS">
+              <label for="css">CSS</label><br>
+              <input type="radio" id="javascript" name="fav_language" value="JavaScript">
+              <label for="javascript">JS</label><br>
+              <input type="submit" value="Submit">
+          </fieldset>
+      </form>
+      <h1>fieldset required section</h1>
+      <form action="/action1_page.php">
+          <input type="radio" id="py" name="fav_language" value="Python">
+          <input type="radio" id="java" name="fav_language" value="Java">
+          <input type="radio" id="javascript" name="fav_language" value="JavaScript">
+          <input type="radio" id="vanillajs" name="fav_language" value="VanillaJS">
+          <label></label>
+      </form>
+      <table>
+          <tr>One</tr>
+          <tr>Two</tr>
+          <tr>Three</tr>
+      </table>
+      <nav class="navbar navbar-default fixed-bottom navbar-dark">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#a11y">A11y</a>
+          </div>
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#top">Top</a></li>
+            <li><a href="#twitter">Twitter</a></li>
+            <li><a href="#youtube">YouTube</a></li>
+            <li><a href="#instagram">Instagram</a></li>
+          </ul>
+        </div>
+      </nav>
+      <br/>
+      <div>
+          <label for="disk_d"></label>
+
+
+          <label id="disk_d"></label>
+          <input type="radio" aria-labelledby="Python">
+
+
+          <meter id="disk_d" value="0.6">60%</meter>
+          <br/>
+          <br/>
+          <label for="output">output</label>
+          <label for="a">input</label>
+          <input type="range" id="a" value="50">
+          <label for="b">input</label>
+          +<input type="number" id="b" value="25">
+          =<output name="x" for="a b"></output>
+          <br/>
+          <br/>
+          <label for="file"></label>
+          <progress id="file" value="32" max="100"> 32% </progress>
+          <br/>
+          <br/>
+      </div>
+
+      <div class="item item1 row-1">
+          <h3>Link with different style span</h3>
+          <p >
+              <span>This </span>is a paragraph
+              <span>Span before</span>
+              <a href="#">
+                  link
+              </a>
+              <span> text to right </span>
+          </p>
+      </div>
+
+      <div class="focus-order-broken">
+          <a class="first" href="#" tabindex="3">First link</a><br>
+          <a class="second" href="#" tabindex="2">Second link</a><br>
+          <a class="Third" href="#" tabindex="1">Third link</a><br>
+      </div>
+
+      <br>
+      <a href="/read">Learn more</a>
+
+      
+      <div>
+          aria-braille-equivalent
+          <button aria-braillelabel="tush">DJ</button>
+          </br></br></br>
+      </div>
+
+
+      <div>
+          aria-conditional-attr
+          <input type="checkbox" aria-checked="true">gggh</textarea>
+          </br></br></br>
+      </div>
+
+
+      <div>
+          aria-deprecated-role
+          <div role="directory"></div>
+          </br></br></br>
+      </div>
+
+      <div>
+          aria-prohibited-attr
+          <div aria-label="1 out of 3"></div></br></br></br>
+      </div>
+
+      <div>
+          frame-title-unique
+          <iframe title="BS">ab</iframe>
+          <iframe title="BS">aa</iframe>
+          </br></br></br>
+      </div>
+
+
+      <div>
+          no-autoplay-audio
+          <!-- <audio controls>
+              <source src="horse.ogg" type="audio/ogg">
+            Your browser does not support the audio element.
+          </audio> -->
+          <!-- <audio controls> 
+              <source src= 
+      "https://media.geeksforgeeks.org/wp-content/uploads/20230524142525/gfg_offline_classes_en.mp3"
+                      type="audio/mp3"> 
+              <source src= 
+      "https://media.geeksforgeeks.org/wp-content/uploads/20220913101124/audiosample.ogg"
+                      type="audio/mp3"> 
+          </audio>  -->
+      </br></br></br>
+      </div>
+
+
+      <div>
+      empty-table-header
+      <table>
+      <th><th>
+          <tr>Empty row header</tr>
+      </table></br></br></br>
+      </div>
+
+
+      <h3>REMOVED RULES</h3>
+      <div>
+          aria-roledescription
+          <p aria-roledescription="my paragraph" id="fail1">paragraph</p>
+          </br></br></br>
+      </div>
+      
+      <div>   
+          audio-caption
+          <audio>
+              <source>
+          </audio>
+          </br></br></br>
+      </div>
+
+      <div>   
+          duplicate-id
+          <p id="abc" class="abc">Lorem ipsum with some text.</p>
+          <div style="display: none;">
+          <p id="abc">some paragraph text with another para text.</p>
+          </div>
+          </br></br></br>
+      </div>
+
+
+      <h2>Non Ally Engine Experimental Rules</h2>
+      <div>
+          p-as-heading
+          <p><b><i>Para heading</i></b></p>
+          <p>A paragraph, A paragraph!</p>
+      </div>
+
+
+      <div>
+          label-content-name-mismatch
+          <div role="link" aria-label="XYZ">ABCD</div>
+          </br></br></br>
+      </div>
+
+      <div>
+          td-has-header
+          <table>
+              <tr>
+                  <td>td1</td>
+                  <td>td2</td>
+                  <td>td3</td>
+                  <td>td4</td>
+              </tr>
+              <tr>
+                  <td>td1</td>
+                  <td>td2</td>
+                  <td>td3</td>
+                  <td>td4</td>
+              </tr>
+              <tr>
+                  <td>td1</td>
+                  <td>td2</td>
+                  <td>td3</td>
+                  <td>td4</td>
+              </tr>
+          </table>
+          </br></br></br>
+      </div>
+
+      <img src="chatgpt.png">
+      <br><br>
+      <iframe src="iframe.html">
+      </iframe>
+      <br><br>
+      <img src="a11yicon.png" alt="Image" width="180" height="180">
+      <br><br>
+      <!-- Show-password rule violation -->
+      Email: <input type="text" placeholder="Enter your email here" id="myEmail"><br><br>
+      Password: <input type="password" value="abcd" id="myPassword"><br><br>
+
+      <!-- Cognitive-captcha and cognitive-captcha-enhanced rule violation -->
+      Captcha to raise violation
+
+
+
+      <!-- accessible-name and role-required violation code -->
+      <div class="name">
+          <div class="access" onclick="openNewTab()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 27 27" fill="none"> 
+                  <path d="M13.5 6.75L6.75 13.5L13.5 20.25" stroke="#5751F9" stroke-width="1.25"></path> 
+                  <path d="M20.25 13.5L6.75 13.5" stroke="#5751F9" stroke-width="1.25"></path> 
+              </svg>
+          </div>
+      </div>
+
+      <!-- accessible-name-carousel and role-required-carousel violation code-->
+      <div class="slider">
+          <div class="slick-prev" onclick="openNewTab()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 27 27" fill="none"> 
+                  <path d="M13.5 6.75L6.75 13.5L13.5 20.25" stroke="#5751F9" stroke-width="1.25"></path>
+                  <path d="M20.25 13.5L6.75 13.5" stroke="#5751F9" stroke-width="1.25"></path>
+              </svg>
+          </div>
+      </div>
+
+
+      <script>
+          function openNewTab() {}
+      </script>
+      
+      </main>
+      
+  <footer>
+  </footer>
+  </body>
+</html>
