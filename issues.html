@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WCAG Dynamic Violations</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    /* 🟥 Top of Page - Low Contrast Header */
+    header {
+      background-color: #333;
+      color: #444; /* Low contrast */
+      text-align: center;
+      padding: 10px;
+    }
+
+    /* 🟨 Navigation - Fixed width, text truncates on zoom */
+    nav {
+      background-color: #555;
+      color: #ddd;
+      width: 600px; /* Fixed width */
+      overflow: hidden;
+      white-space: nowrap; /* Prevents wrapping */
+      padding: 10px;
+    }
+
+    nav a {
+      color: #bbb; /* Low contrast */
+      text-decoration: none;
+      margin-right: 15px;
+    }
+
+    /* 🟩 Extreme Left - Truncated Text */
+    .left-issue {
+      position: absolute;
+      left: 0;
+      width: 150px; /* Too small */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      background-color: lightgray;
+      padding: 10px;
+    }
+
+    /* 🟦 Extreme Right - Disappearing Button */
+    .right-issue {
+      position: absolute;
+      right: 0;
+      width: 150px;
+      background-color: darkblue;
+      color: lightblue;
+      padding: 10px;
+      border: none;
+    }
+
+    /* 🟣 Center of Page - Flashing, Changing Text */
+    .center-issue {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      padding: 20px;
+      border: 2px solid black;
+      text-align: center;
+    }
+
+    /* 🟠 Bottom of Page - Hidden Text */
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #222;
+      color: #222; /* Almost same color as background */
+      text-align: center;
+      padding: 10px;
+    }
+
+    /* 🔻 SCROLLING ISSUE - Content only visible after scrolling */
+    .scroll-issue {
+      margin-top: 150vh; /* Pushes content far below */
+      background-color: #880000; /* Poor contrast */
+      color: #990000;
+      padding: 20px;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    /* 🟤 Zoom Behavior */
+    @media (max-width: 600px) {
+      .right-issue {
+        display: none; /* Disappears on smaller screens */
+      }
+
+      footer {
+        color: black; /* Completely invisible when zoomed */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🟥 TOP OF PAGE - Low Contrast Header -->
+  <header>
+    <h1>Welcome to WCAG Test Page</h1>
+  </header>
+
+  <!-- 🟨 NAVIGATION -->
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+  </nav>
+
+  <!-- 🟩 EXTREME LEFT - Truncated Text -->
+  <div class="left-issue">
+    This text will get cut off...
+  </div>
+
+  <!-- 🟦 EXTREME RIGHT - Disappearing Button -->
+  <button class="right-issue">Click Me</button>
+
+  <!-- 🟣 CENTER OF PAGE - FLASHING TEXT -->
+  <div id="centerText" class="center-issue">
+    WARNING: This text changes every 2 seconds!
+  </div>
+
+  <!-- 🟠 BOTTOM OF PAGE - Hidden Footer Text -->
+  <footer>
+    This text disappears when zoomed in!
+  </footer>
+
+  <!-- 🔻 SCROLLING ISSUE - Hidden Content Below the Fold -->
+  <div class="scroll-issue" id="scrollContent">
+    <p>This content is hidden until you scroll down.</p>
+    <button onclick="alert('You found me!')">Hidden Button</button>
+  </div>
+
+  <script>
+    // 🟣 Center Issue: Flashing Text (Changes Every 2 Sec)
+    let step = 0;
+    function changeCenterText() {
+      let centerText = document.getElementById("centerText");
+      if (step % 2 === 0) {
+        centerText.style.color = "#ff00ff"; /* Magenta (Bad Contrast) */
+        centerText.style.backgroundColor = "#ffff00"; /* Yellow */
+        centerText.innerText = "WARNING: Hard to Read!";
+      } else {
+        centerText.style.color = "#111"; /* Near Black */
+        centerText.style.backgroundColor = "#222"; /* Dark Background */
+        centerText.innerText = "Still Changing! Pay Attention!";
+      }
+      step++;
+      setTimeout(changeCenterText, 2000);
+    }
+    setTimeout(changeCenterText, 2000);
+  </script>
+
+</body>
+</html>

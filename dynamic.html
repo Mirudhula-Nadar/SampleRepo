@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic WCAG Violations Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    /* Poor color contrast */
+    .low-contrast {
+      background-color: #e0e0e0;
+      color: #c0c0c0; /* Light grey on grey (Fails WCAG contrast) */
+      padding: 15px;
+      width: 300px;
+      border: 1px solid #ccc;
+    }
+
+    /* Text truncation issue */
+    .truncate-text {
+      width: 250px; /* Fixed width */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; /* Cuts off text */
+      border: 1px solid black;
+      padding: 10px;
+    }
+
+    /* Bad form - Missing label */
+    .bad-form input {
+      width: 200px;
+      padding: 5px;
+    }
+
+    /* Hidden focus issue */
+    .hidden-focus:focus {
+      outline: none; /* Removes focus visibility */
+    }
+  </style>
+</head>
+<body>
+
+  <h1 id="pageTitle">Welcome to the WCAG Test Page</h1>
+  <p id="desc">This page updates every 5 seconds, triggering WCAG violations.</p>
+
+  <div class="container">
+    <div id="changingText" class="low-contrast">
+      This text has low contrast (will change in 5 sec).
+    </div>
+
+    <div id="truncationBox" class="truncate-text">
+      This text gets cut off at zoom.
+    </div>
+
+    <form class="bad-form">
+      <input type="text" placeholder="Enter Name"> <!-- Missing label -->
+      <button type="submit" class="hidden-focus">Submit</button>
+    </form>
+
+    <img id="dynamicImage" src="missing.jpg"> <!-- No alt text -->
+  </div>
+
+  <script>
+    let changeStep = 0;
+
+    function updateContent() {
+      changeStep = (changeStep + 1) % 3; // Loops between 0, 1, 2
+
+      const textBox = document.getElementById("changingText");
+      const truncBox = document.getElementById("truncationBox");
+      const pageTitle = document.getElementById("pageTitle");
+      const desc = document.getElementById("desc");
+      const image = document.getElementById("dynamicImage");
+
+      if (changeStep === 0) {
+        textBox.style.backgroundColor = "#222";
+        textBox.style.color = "#444"; // Very low contrast
+        textBox.innerText = "Low contrast text changed!";
+        
+        truncBox.innerText = "This text will overflow and disappear.";
+        pageTitle.innerText = "Updated WCAG Test Page";
+        desc.innerText = "Content has changed!";
+        image.src = "image1.jpg";
+      } else if (changeStep === 1) {
+        textBox.style.backgroundColor = "#ffff00";
+        textBox.style.color = "#ffffe0"; // Yellow on yellow (bad contrast)
+        textBox.innerText = "Contrast is even worse now!";
+
+        truncBox.innerText = "Another cut-off text example. Where the additional text will be truncated";
+        pageTitle.innerText = "Content Updated Again!";
+        desc.innerText = "This page will keep changing.";
+        image.src = "image2.jpg";
+      } else {
+        textBox.style.backgroundColor = "#222222"; /* Almost black */
+        textBox.style.color = "#1a1a1a"; /* Slightly lighter black */
+        textBox.innerText = "This is now truly unreadable!";
+
+        truncBox.innerText = "Zoom in to see this vanish.";
+        pageTitle.innerText = "Back to Original!";
+        desc.innerText = "Restarting loop...";
+        image.src = "missing.jpg"; // Missing alt text remains
+      }
+
+      setTimeout(updateContent, 5000); // Change every 5 seconds
+    }
+
+    setTimeout(updateContent, 5000);
+  </script>
+
+</body>
+</html>

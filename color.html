@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WCAG Contrast Issues</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    /* Low contrast text (fails WCAG contrast guidelines) */
+    .low-contrast {
+      background-color: #f4f4f4; /* Light grey */
+      color: #d0d0d0; /* Light grey text (poor contrast) */
+      padding: 15px;
+      width: 300px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+    }
+
+    /* Another contrast issue */
+    .contrast-issue {
+      background-color: #fffb00; /* Yellow */
+      color: #ffffe0; /* Light yellow text (very poor contrast) */
+      padding: 15px;
+      width: 300px;
+      border: 1px solid #999;
+      cursor: pointer;
+    }
+
+    /* Button with changing contrast issues */
+    .change-color {
+      background-color: #666; /* Dark grey */
+      color: #444; /* Another low-contrast issue */
+      padding: 15px;
+      width: 300px;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Good contrast button initially */
+    .good-then-bad {
+      background-color: #007BFF; /* Blue */
+      color: #ffffff; /* White text (good contrast) */
+      padding: 15px;
+      width: 300px;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Bad contrast button initially */
+    .bad-then-good {
+      background-color: #444; /* Low contrast dark grey */
+      color: #333; /* Another dark grey (poor contrast) */
+      padding: 15px;
+      width: 300px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>WCAG Color Contrast Issues</h1>
+  <p>Click on the boxes to change their color (click again to revert!)</p>
+
+  <div class="container">
+    <div id="box1" class="low-contrast" onclick="toggleColor(this)">
+      This text has poor contrast (click me)
+    </div>
+
+    <div id="box2" class="contrast-issue" onclick="toggleColor(this)">
+      Another contrast issue (click me)
+    </div>
+
+    <button id="box3" class="change-color" onclick="toggleColor(this)">
+      Low contrast button (click me)
+    </button>
+
+    <button id="box4" class="good-then-bad" onclick="toggleColor(this)">
+      Good contrast first, bad after clicking
+    </button>
+
+    <button id="box5" class="bad-then-good" onclick="toggleColor(this)">
+      Bad contrast first, good after clicking
+    </button>
+  </div>
+
+  <script>
+    function toggleColor(element) {
+      if (element.id === "box1") {
+        if (element.dataset.toggled === "true") {
+          element.style.backgroundColor = "#f4f4f4"; /* Original */
+          element.style.color = "#d0d0d0";
+          element.dataset.toggled = "false";
+        } else {
+          element.style.backgroundColor = "#cccccc"; /* Lighter grey */
+          element.style.color = "#ffffff"; /* White text (invisible) */
+          element.dataset.toggled = "true";
+        }
+      } else if (element.id === "box2") {
+        if (element.dataset.toggled === "true") {
+          element.style.backgroundColor = "#fffb00"; /* Original */
+          element.style.color = "#ffffe0";
+          element.dataset.toggled = "false";
+        } else {
+          element.style.backgroundColor = "#ff00ff"; /* Bright magenta */
+          element.style.color = "#fffbf0"; /* Worse contrast */
+          element.dataset.toggled = "true";
+        }
+      } else if (element.id === "box3") {
+        if (element.dataset.toggled === "true") {
+          element.style.backgroundColor = "#666"; /* Original */
+          element.style.color = "#444";
+          element.dataset.toggled = "false";
+        } else {
+          element.style.backgroundColor = "#000"; /* Black */
+          element.style.color = "#222"; /* Nearly invisible */
+          element.dataset.toggled = "true";
+        }
+      } else if (element.id === "box4") {
+        if (element.dataset.toggled === "true") {
+          element.style.backgroundColor = "#007BFF"; /* Original (Good) */
+          element.style.color = "#ffffff";
+          element.dataset.toggled = "false";
+        } else {
+          element.style.backgroundColor = "#ffff00"; /* Bad contrast */
+          element.style.color = "#ffffe0"; /* Light yellow text */
+          element.dataset.toggled = "true";
+        }
+      } else if (element.id === "box5") {
+        if (element.dataset.toggled === "true") {
+          element.style.backgroundColor = "#444"; /* Original (Bad) */
+          element.style.color = "#333";
+          element.dataset.toggled = "false";
+        } else {
+          element.style.backgroundColor = "#007BFF"; /* Good contrast */
+          element.style.color = "#ffffff";
+          element.dataset.toggled = "true";
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>
