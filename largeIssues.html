@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚨 WCAG Violation Test Page 🚨</title>
+    <style>
+        /* 🔴 1. Low Contrast Text (1.4.3) */
+        .low-contrast {
+            color: #cccccc;
+            background-color: #eaeaea;
+        }
+
+        /* 🔴 2. Flickering Content (2.3.1) */
+        @keyframes flicker {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        .flicker {
+            animation: flicker 0.1s infinite;
+        }
+
+        /* 🔴 3. Two-Dimensional Scrolling (1.4.10) */
+        .scroll-container {
+            width: 5000px;
+            height: 3000px;
+            background-color: lightgray;
+        }
+
+        /* 🔴 4. No Focus Indicator (2.4.7) */
+        .no-focus-indicator:focus {
+            outline: none;
+        }
+
+        /* 🔴 5. Keyboard Accessibility Issue (2.1.1) */
+        .keyboard-disabled {
+            pointer-events: none;
+        }
+
+        /* 🔴 6. Text Scaling Issue (1.4.4) */
+        .no-zoom {
+            font-size: 12px;
+            transform: scale(1);
+        }
+
+        /* 🔴 7. Inconsistent Link Texts (3.2.4) */
+        .bad-link {
+            color: blue;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🚨 10,000+ WCAG Violations 🚨</h1>
+
+    <!-- 🔴 1. 1000+ Images Missing ALT Text (1.1.1) -->
+    <h2>Missing ALT Text</h2>
+    <script>
+        for (let i = 0; i < 1000; i++) {
+            document.write('<img src="image' + i + '.jpg"> ');
+        }
+    </script>
+
+    <!-- 🔴 2. 1000+ Empty Links (2.4.4, 4.1.2) -->
+    <h2>Empty Links</h2>
+    <script>
+        for (let i = 0; i < 1000; i++) {
+            document.write('<a href="#"></a> ');
+        }
+    </script>
+
+    <!-- 🔴 3. 500+ Flickering Elements (2.3.1) -->
+    <h2>Flickering Content</h2>
+    <script>
+        for (let i = 0; i < 500; i++) {
+            document.write('<div class="flicker">Flickering Text ' + i + '</div>');
+        }
+    </script>
+
+    <!-- 🔴 4. No Focus Indicator (2.4.7) -->
+    <h2>Elements Without Focus Indicators</h2>
+    <script>
+        for (let i = 0; i < 1000; i++) {
+            document.write('<button class="no-focus-indicator">Button ' + i + '</button> ');
+        }
+    </script>
+
+    <!-- 🔴 5. Disabled Keyboard Interaction (2.1.1) -->
+    <h2>Keyboard Disabled Elements</h2>
+    <script>
+        for (let i = 0; i < 1000; i++) {
+            document.write('<button class="keyboard-disabled">Unclickable ' + i + '</button> ');
+        }
+    </script>
+
+    <!-- 🔴 6. Poor Text Scaling (1.4.4) -->
+    <h2>Text That Breaks at 200% Zoom</h2>
+    <script>
+        for (let i = 0; i < 500; i++) {
+            document.write('<p class="no-zoom">This text should support zooming, but it doesn’t. ' + i + '</p>');
+        }
+    </script>
+
+    <!-- 🔴 7. Inconsistent Link Texts (3.2.4) -->
+    <h2>Links with Different Text for Same URL</h2>
+    <script>
+        for (let i = 0; i < 1000; i++) {
+            document.write('<a href="https://example.com" class="bad-link">Click here ' + i + '</a> ');
+            document.write('<a href="https://example.com" class="bad-link">Visit site ' + i + '</a> ');
+        }
+    </script>
+
+    <!-- 🔴 8. Auto-Playing Audio (1.4.2) -->
+    <h2>Auto-Playing Audio</h2>
+    <script>
+        let audio = new Audio("audio.mp3");
+        audio.play();
+    </script>
+
+</body>
+</html>
