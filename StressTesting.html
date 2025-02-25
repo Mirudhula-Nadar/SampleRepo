@@ -104,12 +104,27 @@
     <p style="text-spacing: none;">Text without proper spacing</p>
     
     <script>
-        let container = document.createElement('div');
+        let container = document.createDocumentFragment();
         for (let i = 0; i < 6250; i++) {
-            container.innerHTML += '<p class="low-contrast">Repeated low contrast text violation</p>';
-            container.innerHTML += '<img src="image.png" class="no-alt">';
-            container.innerHTML += '<button class="hidden-focus">Button</button>';
-            container.innerHTML += '<a href="#">Unclear link</a>';
+            let para = document.createElement('p');
+            para.className = 'low-contrast';
+            para.textContent = 'Repeated low contrast text violation';
+            container.appendChild(para);
+
+            let img = document.createElement('img');
+            img.src = 'image.png';
+            img.className = 'no-alt';
+            container.appendChild(img);
+
+            let btn = document.createElement('button');
+            btn.className = 'hidden-focus';
+            btn.textContent = 'Button';
+            container.appendChild(btn);
+
+            let link = document.createElement('a');
+            link.href = '#';
+            link.textContent = 'Unclear link';
+            container.appendChild(link);
         }
         document.body.appendChild(container);
     </script>
