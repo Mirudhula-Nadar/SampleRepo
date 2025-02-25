@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WCAG 2.1 Violation Test Site</title>
+    <style>
+        /* Intentional WCAG violations */
+        .low-contrast {
+            color: lightgray;
+            background-color: white;
+        }
+        .hidden-focus:focus {
+            outline: none;
+        }
+        .flashing-content {
+            animation: flash 0.2s infinite alternate;
+        }
+        @keyframes flash {
+            from { background-color: red; }
+            to { background-color: yellow; }
+        }
+        .no-alt {}
+        .no-caption {}
+        .no-label {}
+        .no-heading {}
+    </style>
+</head>
+<body>
+    <h1>WCAG 2.1 Violation Test Page</h1>
+    
+    <!-- 1.1 Text Alternatives Violations -->
+    <img src="image.png"> <img src="image2.png"> <img src="image3.png"> <!-- Missing alt text multiple times -->
+    
+    <!-- 1.2 Time-based Media Violations -->
+    <video controls><source src="video.mp4" type="video/mp4"></video>
+    <video controls><source src="video2.mp4" type="video/mp4"></video>
+    <video controls><source src="video3.mp4" type="video/mp4"></video> <!-- No captions, no audio descriptions -->
+    
+    <!-- 1.3 Adaptable Violations -->
+    <p style="font-size:10px;">Text without resizing option</p>
+    <p style="font-size:10px;">Another text without resizing</p>
+    <p style="font-size:10px;">More unreadable text</p>
+    
+    <!-- 1.4 Distinguishable Violations -->
+    <p class="low-contrast">Low contrast text</p>
+    <p class="low-contrast">Another instance of low contrast</p>
+    <p class="low-contrast">More instances of poor contrast</p>
+    
+    <!-- 2.1 Keyboard Accessible Violations -->
+    <button class="hidden-focus">Hidden Focus Button</button>
+    <button class="hidden-focus">Another Hidden Focus Button</button>
+    <button class="hidden-focus">More Unfocusable Buttons</button>
+    
+    <!-- 2.3 Seizures and Physical Reactions Violations -->
+    <div class="flashing-content">Flashing content</div>
+    <div class="flashing-content">More flashing content</div>
+    <div class="flashing-content">Even more flashing elements</div>
+    
+    <!-- 2.4 Navigable Violations -->
+    <a href="#">Click here</a> <a href="#">Read more</a> <a href="#">Go</a> <!-- No meaningful link purpose multiple times -->
+    
+    <!-- 2.4.1 Bypass Blocks Violation -->
+    <a href="#main-content" style="display: none;">Skip to Main Content</a>
+    
+    <!-- 2.4.2 Page Titled Violation -->
+    <title></title> <!-- Empty title -->
+    
+    <!-- 2.4.3 Focus Order Violation -->
+    <div tabindex="3">Item 3</div>
+    <div tabindex="1">Item 1</div>
+    <div tabindex="2">Item 2</div> <!-- Incorrect focus order -->
+    
+    <!-- 2.4.4 Link Purpose (In Context) Violation -->
+    <a href="#">More info</a>
+    
+    <!-- 2.4.5 Multiple Ways Violation -->
+    <p>No navigation menu, sitemap, or search provided.</p>
+    
+    <!-- 2.4.6 Headings and Labels Violation -->
+    <h2></h2> <!-- Empty heading -->
+    
+    <!-- 2.4.7 Focus Visible Violation -->
+    <button style="outline: none;">No Focus Outline</button>
+    
+    <!-- 2.4.8 Location Violation -->
+    <p>No breadcrumb navigation available.</p>
+    
+    <!-- 2.4.9 Link Purpose (Link Only) Violation -->
+    <a href="#">Read More</a>
+    
+    <!-- 2.4.10 Section Headings Violation -->
+    <div><b>Section Without Heading</b></div>
+    
+    <!-- 2.4.11 Focus Not Obscured (Minimum) Violation -->
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);">
+        <input type="text"> <!-- Focused input is obscured -->
+    </div>
+    
+    <!-- Additional Violations to reach 25,000 issues -->
+    <form>
+        <input type="text"> <input type="text"> <input type="text"> <!-- Missing labels multiple times -->
+    </form>
+    
+    <h3></h3> <h4></h4> <h5></h5> <!-- Empty heading tags -->
+    
+    <marquee>Scrolling text</marquee> <blink>Blinking text</blink> <!-- Deprecated and inaccessible elements -->
+    
+    <div role="button">Button without interactivity</div>
+    <div role="menu">Menu without proper structure</div>
+    <div role="checkbox">Checkbox without functionality</div>
+    
+    <!-- Adding missing 1.4 violations -->
+    <p class="low-contrast">Poor color contrast</p>
+    <audio autoplay> <!-- No audio control -->
+        <source src="audio.mp3" type="audio/mpeg">
+    </audio>
+    <p style="text-spacing: none;">Text without proper spacing</p>
+    
+    <script>
+        for (let i = 0; i < 25000; i++) {
+            document.write('<p class="low-contrast">Repeated low contrast text violation</p>');
+            document.write('<img src="image.png">');
+            document.write('<button class="hidden-focus">Button</button>');
+            document.write('<a href="#">Unclear link</a>');
+        }
+    </script>
+</body>
+</html>
