@@ -5,128 +5,112 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WCAG 2.1 Violation Test Site</title>
     <style>
-        /* Intentional WCAG violations */
-        .low-contrast {
-            color: lightgray;
-            background-color: white;
+        body {
+            font-family: Arial, sans-serif;
+            margin-bottom: 100px; /* Prevents button overlap */
         }
-        .hidden-focus:focus {
-            outline: none;
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr); /* 6 columns */
+            gap: 10px;
+            padding: 20px;
         }
-        .flashing-content {
-            animation: flash 0.2s infinite alternate;
+        .issue-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            background: #f9f9f9;
+            text-align: center;
         }
-        @keyframes flash {
-            from { background-color: red; }
-            to { background-color: yellow; }
+        .floating-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-        .no-alt img { 
-            display: inline-block; 
-        }
-        .no-label input {
-            margin: 5px;
-        }
-        .low-contrast-text {
-            color: lightgray;
-        }
-        .hidden-focus-button {
-            outline: none;
+        .floating-button:hover {
+            background: #0056b3;
         }
     </style>
 </head>
 <body>
     <h1>WCAG 2.1 Violation Test Page</h1>
-    
-    <div class="no-alt">
-        <img src="image.png"> <img src="image2.png"> <img src="image3.png">
-    </div>
-    
-    <div class="no-label">
-        <form>
-            <input type="text"> <input type="text"> <input type="text">
-        </form>
-    </div>
-    
-    <div class="low-contrast">
-        <p>Low contrast text</p>
-        <p>Another instance of low contrast</p>
-        <p>More instances of poor contrast</p>
-    </div>
-    
-    <div class="hidden-focus">
-        <button class="hidden-focus-button">Hidden Focus Button</button>
-        <button class="hidden-focus-button">Another Hidden Focus Button</button>
-        <button class="hidden-focus-button">More Unfocusable Buttons</button>
-    </div>
-    
-    <div class="flashing-content">Flashing content</div>
-    
-    <a href="#">Click here</a> <a href="#">Read more</a> <a href="#">Go</a>
-    
-    <a href="#main-content" style="display: none;">Skip to Main Content</a>
-    
-    <title></title>
-    
-    <div tabindex="3">Item 3</div>
-    <div tabindex="1">Item 1</div>
-    <div tabindex="2">Item 2</div>
-    
-    <a href="#">More info</a>
-    
-    <p>No navigation menu, sitemap, or search provided.</p>
-    
-    <h2></h2>
-    
-    <button style="outline: none;">No Focus Outline</button>
-    
-    <p>No breadcrumb navigation available.</p>
-    
-    <a href="#">Read More</a>
-    
-    <div><b>Section Without Heading</b></div>
-    
-    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);">
-        <input type="text">
-    </div>
-    
-    <h3></h3> <h4></h4> <h5></h5>
-    
-    <marquee>Scrolling text</marquee> <blink>Blinking text</blink>
-    
-    <div role="button">Button without interactivity</div>
-    <div role="menu">Menu without proper structure</div>
-    <div role="checkbox">Checkbox without functionality</div>
-    
-    <p class="low-contrast-text">Poor color contrast</p>
-    <audio autoplay>
-        <source src="audio.mp3" type="audio/mpeg">
-    </audio>
-    <p style="text-spacing: none;">Text without proper spacing</p>
-    
+
+    <div class="grid-container" id="content-container"></div>
+
+    <!-- Floating Load Button -->
+    <button id="load-more-button" class="floating-button">Load 500</button>
+
     <script>
-        let container = document.createDocumentFragment();
-        for (let i = 0; i < 6250; i++) {
+        let issuesLoaded = 0; // Tracks how many issues are loaded
+        const maxIssues = 25000; // Total number of issues
+        const batchSize = 500; // Fixed batch size per button click
+        const contentContainer = document.getElementById('content-container');
+
+        function createIssue(index) {
+            let issueDiv = document.createElement('div');
+            issueDiv.className = 'issue-card';
+
             let para = document.createElement('p');
             para.className = 'low-contrast';
-            para.textContent = 'Repeated low contrast text violation';
-            container.appendChild(para);
+            para.textContent = `Issue #${index}: Low contrast text`;
+            issueDiv.appendChild(para);
 
             let img = document.createElement('img');
             img.src = 'image.png';
             img.className = 'no-alt';
-            container.appendChild(img);
+            img.alt = `Issue Image ${index}`;
+            issueDiv.appendChild(img);
 
             let btn = document.createElement('button');
             btn.className = 'hidden-focus';
-            btn.textContent = 'Button';
-            container.appendChild(btn);
+            btn.textContent = `Button Issue #${index}`;
+            issueDiv.appendChild(btn);
 
             let link = document.createElement('a');
             link.href = '#';
-            link.textContent = 'Unclear link';
-            container.appendChild(link);
+            link.textContent = `Unclear link #${index}`;
+            issueDiv.appendChild(link);
+
+            return issueDiv;
         }
-        document.body.appendChild(container);
+
+        function loadBatch() {
+            // Remove the previous batch (if exists)
+            while (contentContainer.firstChild) {
+                contentContainer.removeChild(contentContainer.firstChild);
+            }
+
+            let batchEnd = Math.min(issuesLoaded + batchSize, maxIssues);
+            let fragment = document.createDocumentFragment();
+
+            for (let i = issuesLoaded + 1; i <= batchEnd; i++) {
+                fragment.appendChild(createIssue(i));
+            }
+
+            contentContainer.appendChild(fragment);
+            issuesLoaded = batchEnd;
+
+            if (issuesLoaded >= maxIssues) {
+                document.getElementById("load-more-button").textContent = "All 25,000 Loaded";
+                document.getElementById("load-more-button").disabled = true;
+            } else {
+                document.getElementById("load-more-button").textContent = `Load ${issuesLoaded + batchSize}`;
+            }
+
+            // Scroll to the top of the new batch
+            contentContainer.scrollIntoView({ behavior: "smooth" });
+        }
+
+        document.getElementById('load-more-button').addEventListener('click', loadBatch);
+
+        loadBatch(); // Initial 500 issues on page load
     </script>
 </body>
 </html>
