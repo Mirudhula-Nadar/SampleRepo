@@ -98,6 +98,9 @@
         
         .protected-content {
             display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         
         .logout-container {
@@ -121,10 +124,22 @@
             background-color: #c82333;
         }
         
-        .content-wrapper {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
+        .content-header {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 2rem;
+        }
+        
+        .demo-section {
+            margin: 2rem 0;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .demo-section h3 {
+            color: #333;
+            margin-top: 0;
         }
     </style>
 </head>
@@ -134,6 +149,7 @@
         <div class="auth-header">
             <h1>Authentication Required</h1>
             <p>Please enter your credentials to access the protected content</p>
+            <p><small><strong>Credentials:</strong> admin / password</small></p>
         </div>
         
         <form id="loginForm">
@@ -161,10 +177,100 @@
             <button id="logoutBtn" class="logout-btn">Logout</button>
         </div>
         
-        <div class="content-wrapper">
-            <!-- The original wcag-issues.html content will be loaded here -->
-            <div id="mainContent">
-                <!-- Content will be dynamically loaded -->
+        <div id="mainContent">
+            <h1 class="content-header">Basic Auth Website - Static Implementation</h1>
+            
+            <div class="demo-section">
+                <h3>Welcome to the Protected Area</h3>
+                <p>This is a demonstration of client-side basic authentication for static hosting on GitHub Pages.</p>
+                <p>The original Node.js server implementation has been converted to work as a static HTML page.</p>
+            </div>
+            
+            <div class="demo-section">
+                <h3>Authentication Features</h3>
+                <ul>
+                    <li>Client-side credential validation</li>
+                    <li>URL-based credential passing support</li>
+                    <li>Session management using sessionStorage</li>
+                    <li>24-hour session timeout</li>
+                    <li>Secure logout functionality</li>
+                    <li>Responsive design</li>
+                </ul>
+            </div>
+            
+            <div class="demo-section">
+                <h3>URL Authentication Examples</h3>
+                <p>You can authenticate directly via URL parameters:</p>
+                <ul>
+                    <li><code>static-auth.html?username=admin&password=password</code></li>
+                    <li><code>static-auth.html?user=admin&pass=password</code></li>
+                    <li><code>static-auth.html#username=admin&password=password</code></li>
+                </ul>
+            </div>
+            
+            <div class="demo-section">
+                <h3>WCAG Testing Elements</h3>
+                <p>This page contains various accessibility testing elements from the original implementation:</p>
+                
+                <h4>Form Elements</h4>
+                <form>
+                    <fieldset>
+                        <legend>Programming Language Preference</legend>
+                        <input type="radio" id="html" name="fav_language" value="HTML">
+                        <label for="html">HTML</label><br>
+                        <input type="radio" id="css" name="fav_language" value="CSS">
+                        <label for="css">CSS</label><br>
+                        <input type="radio" id="javascript" name="fav_language" value="JavaScript">
+                        <label for="javascript">JavaScript</label><br>
+                        <input type="submit" value="Submit">
+                    </fieldset>
+                </form>
+                
+                <h4>Navigation Elements</h4>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+                
+                <h4>Interactive Elements</h4>
+                <button onclick="showAlert()">Test Button</button>
+                <input type="text" placeholder="Search..." id="searchInput">
+                
+                <h4>Data Elements</h4>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Column 1</th>
+                            <th>Column 2</th>
+                            <th>Column 3</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Data 1</td>
+                            <td>Data 2</td>
+                            <td>Data 3</td>
+                        </tr>
+                        <tr>
+                            <td>Data 4</td>
+                            <td>Data 5</td>
+                            <td>Data 6</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="demo-section">
+                <h3>GitHub Pages Deployment</h3>
+                <p>This static implementation can be easily deployed to GitHub Pages:</p>
+                <ol>
+                    <li>Upload the HTML file to your GitHub repository</li>
+                    <li>Enable GitHub Pages in repository settings</li>
+                    <li>Access your authenticated page via the GitHub Pages URL</li>
+                </ol>
             </div>
         </div>
     </div>
@@ -187,10 +293,60 @@
         const loginBtn = document.getElementById('loginBtn');
         const logoutBtn = document.getElementById('logoutBtn');
         const errorMessage = document.getElementById('errorMessage');
-        const mainContent = document.getElementById('mainContent');
+        
+        // Parse credentials from URL (basic auth style)
+        function parseURLCredentials() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const username = urlParams.get('username') || urlParams.get('user');
+            const password = urlParams.get('password') || urlParams.get('pass');
+            
+            // Also check for hash-based parameters
+            if (!username || !password) {
+                const hash = window.location.hash.substring(1);
+                const hashParams = new URLSearchParams(hash);
+                return {
+                    username: hashParams.get('username') || hashParams.get('user') || username,
+                    password: hashParams.get('password') || hashParams.get('pass') || password
+                };
+            }
+            
+            return { username, password };
+        }
+        
+        // Authenticate with URL credentials
+        function authenticateFromURL() {
+            const { username, password } = parseURLCredentials();
+            
+            if (username && password) {
+                if (username === VALID_CREDENTIALS.username && password === VALID_CREDENTIALS.password) {
+                    // Create session for URL-based authentication
+                    const sessionData = {
+                        authenticated: true,
+                        username: username,
+                        timestamp: new Date().getTime(),
+                        method: 'url'
+                    };
+                    sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
+                    
+                    // Clean URL to remove credentials for security
+                    const cleanURL = window.location.protocol + '//' + window.location.host + window.location.pathname;
+                    window.history.replaceState({}, document.title, cleanURL);
+                    
+                    return true;
+                }
+            }
+            return false;
+        }
         
         // Check if user is already authenticated
         function checkAuthentication() {
+            // First check for URL-based credentials
+            if (authenticateFromURL()) {
+                showProtectedContent();
+                return;
+            }
+            
+            // Then check existing session
             const session = sessionStorage.getItem(SESSION_KEY);
             if (session) {
                 try {
@@ -208,6 +364,7 @@
                     }
                 } catch (e) {
                     // Invalid session data
+                    console.log('Invalid session data');
                 }
             }
             showLoginForm();
@@ -231,14 +388,6 @@
             document.body.style.justifyContent = 'initial';
             document.body.style.alignItems = 'initial';
             document.body.style.minHeight = 'initial';
-            loadProtectedContent();
-        }
-        
-        // Load the protected content (wcag-issues.html content)
-        function loadProtectedContent() {
-            // Since we can't fetch the file directly in a static environment,
-            // we'll embed the content directly
-            mainContent.innerHTML = getWCAGContent();
         }
         
         // Handle login form submission
@@ -292,97 +441,9 @@
             }
         });
         
-        // Function to return the WCAG content
-        function getWCAGContent() {
-            var content = '<main id="main">';
-            content += '<style>';
-            content += 'a { outline-color: transparent; text-decoration: none; padding: 2px 1px 0; }';
-            content += '.focus-order-broken a { margin-left: 0.75em; }';
-            content += '.focus-order-broken .first, .focus-order-broken .third { float: left; }';
-            content += '.focus-order-broken .second { float: right; }';
-            content += '</style>';
-            content += '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">';
-            content += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>';
-            content += '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>';
-            content += '<h1 style="text-align: center; color: #007bff; margin-bottom: 2rem;">Basic Auth Website - Static Implementation</h1>';
-            content += '<div class="menu">';
-            content += '<a href="#">Logo</a>';
-            content += '<a href="/menu1" style="position: absolute; right: 0"> Item1 </a>';
-            content += '<div class="menu-class">';
-            content += '<div class="menu-item" onclick="openNewTab()" style="position: absolute; right: 0">Item2</div>';
-            content += '</div></div><br/>';
-            content += '<div class="SearchInputForm" style="position: absolute; right: 0">';
-            content += '<input id="search-input" type="text" placeholder="Search this page">';
-            content += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16" tabindex="-1">';
-            content += '<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>';
-            content += '</svg></div><br/><br/>';
-            content += '<nav class="navbar navbar-default"><div class="container-fluid"><div class="navbar-header">';
-            content += '<a class="navbar-brand" href="#website">WebSiteName</a></div>';
-            content += '<ul class="nav navbar-nav">';
-            content += '<li class="active"><a href="#home">Home</a></li>';
-            content += '<li><a href="#page4">Page 4</a></li>';
-            content += '<li><a href="#page3">Page 3</a></li>';
-            content += '<li><a href="#page2">Page 2</a></li>';
-            content += '</ul></div></nav>';
-            content += '<h2>The fieldset element</h2>';
-            content += '<form action="/action_page.php"><fieldset>';
-            content += '<input type="radio" id="html" name="fav_language" value="HTML">';
-            content += '<label>HTML</label><br>';
-            content += '<input type="radio" id="css" name="fav_language" value="CSS">';
-            content += '<label for="css">CSS</label><br>';
-            content += '<input type="radio" id="javascript" name="fav_language" value="JavaScript">';
-            content += '<label for="javascript">JS</label><br>';
-            content += '<input type="submit" value="Submit">';
-            content += '</fieldset></form>';
-            content += '<h1>fieldset required section</h1>';
-            content += '<form action="/action1_page.php">';
-            content += '<input type="radio" id="py" name="fav_language" value="Python">';
-            content += '<input type="radio" id="java" name="fav_language" value="Java">';
-            content += '<input type="radio" id="javascript2" name="fav_language" value="JavaScript">';
-            content += '<input type="radio" id="vanillajs" name="fav_language" value="VanillaJS">';
-            content += '<label></label></form>';
-            content += '<table><tr>One</tr><tr>Two</tr><tr>Three</tr></table>';
-            content += '<div class="focus-order-broken">';
-            content += '<a class="first" href="#" tabindex="3">First link</a><br>';
-            content += '<a class="second" href="#" tabindex="2">Second link</a><br>';
-            content += '<a class="Third" href="#" tabindex="1">Third link</a><br>';
-            content += '</div><br><a href="/read">Learn more</a>';
-            content += '<div>aria-braille-equivalent<button aria-braillelabel="tush">DJ</button></div>';
-            content += '<div>aria-conditional-attr<input type="checkbox" aria-checked="true">gggh</div>';
-            content += '<div>aria-deprecated-role<div role="directory"></div></div>';
-            content += '<div>aria-prohibited-attr<div aria-label="1 out of 3"></div></div>';
-            content += '<div>frame-title-unique<iframe title="BS">ab</iframe><iframe title="BS">aa</iframe></div>';
-            content += '<div>no-autoplay-audio</div>';
-            content += '<div>empty-table-header<table><th></th><tr>Empty row header</tr></table></div>';
-            content += '<h3>REMOVED RULES</h3>';
-            content += '<div>aria-roledescription<p aria-roledescription="my paragraph" id="fail1">paragraph</p></div>';
-            content += '<div>audio-caption<audio><source></audio></div>';
-            content += '<div>duplicate-id<p id="abc" class="abc">Lorem ipsum with some text.</p>';
-            content += '<div style="display: none;"><p id="abc2">some paragraph text with another para text.</p></div></div>';
-            content += '<h2>Non Ally Engine Experimental Rules</h2>';
-            content += '<div>p-as-heading<p><b><i>Para heading</i></b></p><p>A paragraph, A paragraph!</p></div>';
-            content += '<div>label-content-name-mismatch<div role="link" aria-label="XYZ">ABCD</div></div>';
-            content += '<div>td-has-header<table>';
-            content += '<tr><td>td1</td><td>td2</td><td>td3</td><td>td4</td></tr>';
-            content += '<tr><td>td1</td><td>td2</td><td>td3</td><td>td4</td></tr>';
-            content += '<tr><td>td1</td><td>td2</td><td>td3</td><td>td4</td></tr>';
-            content += '</table></div>';
-            content += 'Email: <input type="text" placeholder="Enter your email here" id="myEmail"><br><br>';
-            content += 'Password: <input type="password" value="abcd" id="myPassword"><br><br>';
-            content += 'Captcha to raise violation';
-            content += '<div class="name"><div class="access" onclick="openNewTab()">';
-            content += '<svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 27 27" fill="none">';
-            content += '<path d="M13.5 6.75L6.75 13.5L13.5 20.25" stroke="#5751F9" stroke-width="1.25"></path>';
-            content += '<path d="M20.25 13.5L6.75 13.5" stroke="#5751F9" stroke-width="1.25"></path>';
-            content += '</svg></div></div>';
-            content += '<div class="slider"><div class="slick-prev" onclick="openNewTab()">';
-            content += '<svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 27 27" fill="none">';
-            content += '<path d="M13.5 6.75L6.75 13.5L13.5 20.25" stroke="#5751F9" stroke-width="1.25"></path>';
-            content += '<path d="M20.25 13.5L6.75 13.5" stroke="#5751F9" stroke-width="1.25"></path>';
-            content += '</svg></div></div>';
-            content += '<script>function openNewTab() {}</script>';
-            content += '</main>';
-            return content;
+        // Demo function for testing
+        function showAlert() {
+            alert('Button clicked! This demonstrates interactive elements.');
         }
         
         // Initialize the application
