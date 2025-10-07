@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Auth - Static Implementation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .auth-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .auth-header h1 {
+            color: #333;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        
+        .auth-header p {
+            color: #666;
+            margin: 0.5rem 0 0 0;
+            font-size: 0.9rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        
+        input[type="text"]:focus, input[type="password"]:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .login-btn:hover {
+            background-color: #0056b3;
+        }
+        
+        .login-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        .protected-content {
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logout-container {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+        }
+        
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+        
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+        
+        .content-header {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 2rem;
+        }
+        
+        .demo-section {
+            margin: 2rem 0;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .demo-section h3 {
+            color: #333;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div id="loginContainer" class="auth-container">
+        <div class="auth-header">
+            <h1>Authentication Required</h1>
+            <p>Please enter your credentials to access the protected content</p>
+            <p><small><strong>Credentials:</strong> admin / password</small></p>
+        </div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required autocomplete="username">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required autocomplete="current-password">
+            </div>
+            
+            <button type="submit" class="login-btn" id="loginBtn">Login</button>
+            
+            <div id="errorMessage" class="error-message">
+                Invalid username or password. Please try again.
+            </div>
+        </form>
+    </div>
+
+    <!-- Protected Content -->
+    <div id="protectedContent" class="protected-content">
+        <div class="logout-container">
+            <button id="logoutBtn" class="logout-btn">Logout</button>
+        </div>
+        
+        <div id="mainContent">
+            <h1 class="content-header">Basic Auth Website - Static Implementation</h1>
+            
+            <div class="demo-section">
+                <h3>Welcome to the Protected Area</h3>
+                <p>This is a demonstration of client-side basic authentication for static hosting on GitHub Pages.</p>
+                <p>The original Node.js server implementation has been converted to work as a static HTML page.</p>
+            </div>
+            
+            <div class="demo-section">
+                <h3>Authentication Features</h3>
+                <ul>
+                    <li>Client-side credential validation</li>
+                    <li>Session management using sessionStorage</li>
+                    <li>24-hour session timeout</li>
+                    <li>Secure logout functionality</li>
+                    <li>Responsive design</li>
+                </ul>
+            </div>
+            
+            <div class="demo-section">
+                <h3>WCAG Testing Elements</h3>
+                <p>This page contains various accessibility testing elements from the original implementation:</p>
+                
+                <h4>Form Elements</h4>
+                <form>
+                    <fieldset>
+                        <legend>Programming Language Preference</legend>
+                        <input type="radio" id="html" name="fav_language" value="HTML">
+                        <label for="html">HTML</label><br>
+                        <input type="radio" id="css" name="fav_language" value="CSS">
+                        <label for="css">CSS</label><br>
+                        <input type="radio" id="javascript" name="fav_language" value="JavaScript">
+                        <label for="javascript">JavaScript</label><br>
+                        <input type="submit" value="Submit">
+                    </fieldset>
+                </form>
+                
+                <h4>Navigation Elements</h4>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+                
+                <h4>Interactive Elements</h4>
+                <button onclick="showAlert()">Test Button</button>
+                <input type="text" placeholder="Search..." id="searchInput">
+                
+                <h4>Data Elements</h4>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Column 1</th>
+                            <th>Column 2</th>
+                            <th>Column 3</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Data 1</td>
+                            <td>Data 2</td>
+                            <td>Data 3</td>
+                        </tr>
+                        <tr>
+                            <td>Data 4</td>
+                            <td>Data 5</td>
+                            <td>Data 6</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="demo-section">
+                <h3>GitHub Pages Deployment</h3>
+                <p>This static implementation can be easily deployed to GitHub Pages:</p>
+                <ol>
+                    <li>Upload the HTML file to your GitHub repository</li>
+                    <li>Enable GitHub Pages in repository settings</li>
+                    <li>Access your authenticated page via the GitHub Pages URL</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const VALID_CREDENTIALS = {
+            username: 'admin',
+            password: 'password'
+        };
+        
+        const SESSION_KEY = 'basicAuthSession';
+        
+        // DOM Elements
+        const loginContainer = document.getElementById('loginContainer');
+        const protectedContent = document.getElementById('protectedContent');
+        const loginForm = document.getElementById('loginForm');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const errorMessage = document.getElementById('errorMessage');
+        
+        // Parse credentials from URL (basic auth style)
+        function parseURLCredentials() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const username = urlParams.get('username') || urlParams.get('user');
+            const password = urlParams.get('password') || urlParams.get('pass');
+            
+            // Also check for hash-based parameters
+            if (!username || !password) {
+                const hash = window.location.hash.substring(1);
+                const hashParams = new URLSearchParams(hash);
+                return {
+                    username: hashParams.get('username') || hashParams.get('user') || username,
+                    password: hashParams.get('password') || hashParams.get('pass') || password
+                };
+            }
+            
+            return { username, password };
+        }
+        
+        // Authenticate with URL credentials
+        function authenticateFromURL() {
+            const { username, password } = parseURLCredentials();
+            
+            if (username && password) {
+                if (username === VALID_CREDENTIALS.username && password === VALID_CREDENTIALS.password) {
+                    // Create session for URL-based authentication
+                    const sessionData = {
+                        authenticated: true,
+                        username: username,
+                        timestamp: new Date().getTime(),
+                        method: 'url'
+                    };
+                    sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
+                    
+                    // Clean URL to remove credentials for security
+                    const cleanURL = window.location.protocol + '//' + window.location.host + window.location.pathname;
+                    window.history.replaceState({}, document.title, cleanURL);
+                    
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+        // Check if user is already authenticated
+        function checkAuthentication() {
+            // First check for URL-based credentials
+            if (authenticateFromURL()) {
+                showProtectedContent();
+                return;
+            }
+            
+            // Then check existing session
+            const session = sessionStorage.getItem(SESSION_KEY);
+            if (session) {
+                try {
+                    const sessionData = JSON.parse(session);
+                    if (sessionData.authenticated && sessionData.timestamp) {
+                        // Check if session is still valid (24 hours)
+                        const now = new Date().getTime();
+                        const sessionAge = now - sessionData.timestamp;
+                        const maxAge = 24 * 60 * 60 * 1000; // 24 hours
+                        
+                        if (sessionAge < maxAge) {
+                            showProtectedContent();
+                            return;
+                        }
+                    }
+                } catch (e) {
+                    // Invalid session data
+                    console.log('Invalid session data');
+                }
+            }
+            showLoginForm();
+        }
+        
+        // Show login form
+        function showLoginForm() {
+            loginContainer.style.display = 'block';
+            protectedContent.style.display = 'none';
+            document.body.style.display = 'flex';
+            document.body.style.justifyContent = 'center';
+            document.body.style.alignItems = 'center';
+            document.body.style.minHeight = '100vh';
+        }
+        
+        // Show protected content
+        function showProtectedContent() {
+            loginContainer.style.display = 'none';
+            protectedContent.style.display = 'block';
+            document.body.style.display = 'block';
+            document.body.style.justifyContent = 'initial';
+            document.body.style.alignItems = 'initial';
+            document.body.style.minHeight = 'initial';
+        }
+        
+        // Handle login form submission
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+            
+            // Disable form during authentication
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Authenticating...';
+            errorMessage.style.display = 'none';
+            
+            // Simulate authentication delay
+            setTimeout(() => {
+                if (username === VALID_CREDENTIALS.username && password === VALID_CREDENTIALS.password) {
+                    // Successful authentication
+                    const sessionData = {
+                        authenticated: true,
+                        username: username,
+                        timestamp: new Date().getTime()
+                    };
+                    sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
+                    showProtectedContent();
+                } else {
+                    // Failed authentication
+                    errorMessage.style.display = 'block';
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+                
+                // Re-enable form
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Login';
+            }, 500);
+        });
+        
+        // Handle logout
+        logoutBtn.addEventListener('click', function() {
+            sessionStorage.removeItem(SESSION_KEY);
+            usernameInput.value = '';
+            passwordInput.value = '';
+            showLoginForm();
+        });
+        
+        // Handle Enter key in password field
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loginForm.dispatchEvent(new Event('submit'));
+            }
+        });
+        
+        // Demo function for testing
+        function showAlert() {
+            alert('Button clicked! This demonstrates interactive elements.');
+        }
+        
+        // Initialize the application
+        checkAuthentication();
+    </script>
+</body>
+</html>
