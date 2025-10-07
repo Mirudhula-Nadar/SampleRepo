@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Auth - Static Implementation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .auth-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .auth-header h1 {
+            color: #333;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        
+        .auth-header p {
+            color: #666;
+            margin: 0.5rem 0 0 0;
+            font-size: 0.9rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        
+        input[type="text"]:focus, input[type="password"]:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .login-btn:hover {
+            background-color: #0056b3;
+        }
+        
+        .login-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        .protected-content {
+            display: none;
+        }
+        
+        .logout-container {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+        }
+        
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+        
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+        
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div id="loginContainer" class="auth-container">
+        <div class="auth-header">
+            <h1>Authentication Required</h1>
+            <p>Please enter your credentials to access the protected content</p>
+        </div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required autocomplete="username">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required autocomplete="current-password">
+            </div>
+            
+            <button type="submit" class="login-btn" id="loginBtn">Login</button>
+            
+            <div id="errorMessage" class="error-message">
+                Invalid username or password. Please try again.
+            </div>
+        </form>
+    </div>
+
+    <!-- Protected Content -->
+    <div id="protectedContent" class="protected-content">
+        <div class="logout-container">
+            <button id="logoutBtn" class="logout-btn">Logout</button>
+        </div>
+        
+        <div class="content-wrapper">
+            <!-- The original wcag-issues.html content will be loaded here -->
+            <div id="mainContent">
+                <!-- Content will be dynamically loaded -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const VALID_CREDENTIALS = {
+            username: 'admin',
+            password: 'password'
+        };
+        
+        const SESSION_KEY = 'basicAuthSession';
+        
+        // DOM Elements
+        const loginContainer = document.getElementById('loginContainer');
+        const protectedContent = document.getElementById('protectedContent');
+        const loginForm = document.getElementById('loginForm');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const errorMessage = document.getElementById('errorMessage');
+        const mainContent = document.getElementById('mainContent');
+        
+        // Check if user is already authenticated
+        function checkAuthentication() {
+            const session = sessionStorage.getItem(SESSION_KEY);
+            if (session) {
+                try {
+                    const sessionData = JSON.parse(session);
+                    if (sessionData.authenticated && sessionData.timestamp) {
+                        // Check if session is still valid (24 hours)
+                        const now = new Date().getTime();
+                        const sessionAge = now - sessionData.timestamp;
+                        const maxAge = 24 * 60 * 60 * 1000; // 24 hours
+                        
+                        if (sessionAge < maxAge) {
+                            showProtectedContent();
+                            return;
+                        }
+                    }
+                } catch (e) {
+                    // Invalid session data
+                }
+            }
+            showLoginForm();
+        }
+        
+        // Show login form
+        function showLoginForm() {
+            loginContainer.style.display = 'block';
+            protectedContent.style.display = 'none';
+            document.body.style.display = 'flex';
+            document.body.style.justifyContent = 'center';
+            document.body.style.alignItems = 'center';
+            document.body.style.minHeight = '100vh';
+        }
+        
+        // Show protected content
+        function showProtectedContent() {
+            loginContainer.style.display = 'none';
+            protectedContent.style.display = 'block';
+            document.body.style.display = 'block';
+            document.body.style.justifyContent = 'initial';
+            document.body.style.alignItems = 'initial';
+            document.body.style.minHeight = 'initial';
+            loadProtectedContent();
+        }
+        
+        // Load the protected content (wcag-issues.html content)
+        function loadProtectedContent() {
+            // Since we can't fetch the file directly in a static environment,
+            // we'll embed the content directly
+            mainContent.innerHTML = getWCAGContent();
+        }
+        
+        // Handle login form submission
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+            
+            // Disable form during authentication
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Authenticating...';
+            errorMessage.style.display = 'none';
+            
+            // Simulate authentication delay
+            setTimeout(() => {
+                if (username === VALID_CREDENTIALS.username && password === VALID_CREDENTIALS.password) {
+                    // Successful authentication
+                    const sessionData = {
+                        authenticated: true,
+                        username: username,
+                        timestamp: new Date().getTime()
+                    };
+                    sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
+                    showProtectedContent();
+                } else {
+                    // Failed authentication
+                    errorMessage.style.display = 'block';
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+                
+                // Re-enable form
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Login';
+            }, 500);
+        });
+        
+        // Handle logout
+        logoutBtn.addEventListener('click', function() {
+            sessionStorage.removeItem(SESSION_KEY);
+            usernameInput.value = '';
+            passwordInput.value = '';
+            showLoginForm();
+        });
+        
+        // Handle Enter key in password field
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loginForm.dispatchEvent(new Event('submit'));
+            }
+        });
+        
+        // Function to return the WCAG content
+        function getWCAGContent() {
+            var content = '<main id="main">';
+            content += '<style>';
+            content += 'a { outline-color: transparent; text-decoration: none; padding: 2px 1px 0; }';
+            content += '.focus-order-broken a { margin-left: 0.75em; }';
+            content += '.focus-order-broken .first, .focus-order-broken .third { float: left; }';
+            content += '.focus-order-broken .second { float: right; }';
+            content += '</style>';
+            content += '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">';
+            content += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>';
+            content += '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>';
+            content += '<h1 style="text-align: center; color: #007bff; margin-bottom: 2rem;">Basic Auth Website - Static Implementation</h1>';
+            content += '<div class="menu">';
+            content += '<a href="#">Logo</a>';
+            content += '<a href="/menu1" style="position: absolute; right: 0"> Item1 </a>';
+            content += '<div class="menu-class">';
+            content += '<div class="menu-item" onclick="openNewTab()" style="position: absolute; right: 0">Item2</div>';
+            content += '</div></div><br/>';
+            content += '<div class="SearchInputForm" style="position: absolute; right: 0">';
+            content += '<input id="search-input" type="text" placeholder="Search this page">';
+            content += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16" tabindex="-1">';
+            content += '<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>';
+            content += '</svg></div><br/><br/>';
+            content += '<nav class="navbar navbar-default"><div class="container-fluid"><div class="navbar-header">';
+            content += '<a class="navbar-brand" href="#website">WebSiteName</a></div>';
+            content += '<ul class="nav navbar-nav">';
+            content += '<li class="active"><a href="#home">Home</a></li>';
+            content += '<li><a href="#page4">Page 4</a></li>';
+            content += '<li><a href="#page3">Page 3</a></li>';
+            content += '<li><a href="#page2">Page 2</a></li>';
+            content += '</ul></div></nav>';
+            content += '<h2>The fieldset element</h2>';
+            content += '<form action="/action_page.php"><fieldset>';
+            content += '<input type="radio" id="html" name="fav_language" value="HTML">';
+            content += '<label>HTML</label><br>';
+            content += '<input type="radio" id="css" name="fav_language" value="CSS">';
+            content += '<label for="css">CSS</label><br>';
+            content += '<input type="radio" id="javascript" name="fav_language" value="JavaScript">';
+            content += '<label for="javascript">JS</label><br>';
+            content += '<input type="submit" value="Submit">';
+            content += '</fieldset></form>';
+            content += '<h1>fieldset required section</h1>';
+            content += '<form action="/action1_page.php">';
+            content += '<input type="radio" id="py" name="fav_language" value="Python">';
+            content += '<input type="radio" id="java" name="fav_language" value="Java">';
+            content += '<input type="radio" id="javascript2" name="fav_language" value="JavaScript">';
+            content += '<input type="radio" id="vanillajs" name="fav_language" value="VanillaJS">';
+            content += '<label></label></form>';
+            content += '<table><tr>One</tr><tr>Two</tr><tr>Three</tr></table>';
+            content += '<div class="focus-order-broken">';
+            content += '<a class="first" href="#" tabindex="3">First link</a><br>';
+            content += '<a class="second" href="#" tabindex="2">Second link</a><br>';
+            content += '<a class="Third" href="#" tabindex="1">Third link</a><br>';
+            content += '</div><br><a href="/read">Learn more</a>';
+            content += '<div>aria-braille-equivalent<button aria-braillelabel="tush">DJ</button></div>';
+            content += '<div>aria-conditional-attr<input type="checkbox" aria-checked="true">gggh</div>';
+            content += '<div>aria-deprecated-role<div role="directory"></div></div>';
+            content += '<div>aria-prohibited-attr<div aria-label="1 out of 3"></div></div>';
+            content += '<div>frame-title-unique<iframe title="BS">ab</iframe><iframe title="BS">aa</iframe></div>';
+            content += '<div>no-autoplay-audio</div>';
+            content += '<div>empty-table-header<table><th></th><tr>Empty row header</tr></table></div>';
+            content += '<h3>REMOVED RULES</h3>';
+            content += '<div>aria-roledescription<p aria-roledescription="my paragraph" id="fail1">paragraph</p></div>';
+            content += '<div>audio-caption<audio><source></audio></div>';
+            content += '<div>duplicate-id<p id="abc" class="abc">Lorem ipsum with some text.</p>';
+            content += '<div style="display: none;"><p id="abc2">some paragraph text with another para text.</p></div></div>';
+            content += '<h2>Non Ally Engine Experimental Rules</h2>';
+            content += '<div>p-as-heading<p><b><i>Para heading</i></b></p><p>A paragraph, A paragraph!</p></div>';
+            content += '<div>label-content-name-mismatch<div role="link" aria-label="XYZ">ABCD</div></div>';
+            content += '<div>td-has-header<table>';
+            content += '<tr><td>td1</td><td>td2</td><td>td3</td><td>td4</td></tr>';
+            content += '<tr><td>td1</td><td>td2</td><td>td3</td><td>td4</td></tr>';
+            content += '<tr><td>td1</td><td>td2</td><td>td3</td><td>td4</td></tr>';
+            content += '</table></div>';
+            content += 'Email: <input type="text" placeholder="Enter your email here" id="myEmail"><br><br>';
+            content += 'Password: <input type="password" value="abcd" id="myPassword"><br><br>';
+            content += 'Captcha to raise violation';
+            content += '<div class="name"><div class="access" onclick="openNewTab()">';
+            content += '<svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 27 27" fill="none">';
+            content += '<path d="M13.5 6.75L6.75 13.5L13.5 20.25" stroke="#5751F9" stroke-width="1.25"></path>';
+            content += '<path d="M20.25 13.5L6.75 13.5" stroke="#5751F9" stroke-width="1.25"></path>';
+            content += '</svg></div></div>';
+            content += '<div class="slider"><div class="slick-prev" onclick="openNewTab()">';
+            content += '<svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 27 27" fill="none">';
+            content += '<path d="M13.5 6.75L6.75 13.5L13.5 20.25" stroke="#5751F9" stroke-width="1.25"></path>';
+            content += '<path d="M20.25 13.5L6.75 13.5" stroke="#5751F9" stroke-width="1.25"></path>';
+            content += '</svg></div></div>';
+            content += '<script>function openNewTab() {}</script>';
+            content += '</main>';
+            return content;
+        }
+        
+        // Initialize the application
+        checkAuthentication();
+    </script>
+</body>
+</html>
