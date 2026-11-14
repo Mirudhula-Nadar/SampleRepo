@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mobile WA fixture 1</title>
+  <style>
+    body { font-family: Arial, sans-serif; color: #111; background: #fff; margin: 16px; }
+    .low { color: #b5b5b5; background: #fff; }
+    .over-image { color: #fff; background-image: linear-gradient(#777, #999), url("data:image/gif;base64,R0lGODlhAQABAAAAACw="); padding: 4px; }
+    img { width: 40px; height: 40px; background: #ddd; display: inline-block; }
+    /* Full-width link pinned to the bottom of the viewport, so a device tap at the same screen
+       height reaches it on any phone; the body padding keeps it from covering page content. */
+    body { padding-bottom: 30vh; }
+    .next-page { position: fixed; left: 0; right: 0; bottom: 0; height: 22vh; display: flex; align-items: center; justify-content: center; background: #0b57d0; color: #fff; font-size: 22px; font-weight: bold; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <header><h1>Mobile WA fixture 1</h1></header>
+  <main>
+    <section id="promo" aria-label="Promotions">
+      <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">
+    </section>
+    <section aria-label="Gallery">
+      <img id="gallery-a" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">
+      <img id="gallery-b" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">
+    </section>
+    <section aria-label="Shortcuts">
+      <a id="link-1" href="#one"></a>
+      <a id="link-2" href="#two"></a>
+      <a id="link-3" href="#three"></a>
+      <a id="link-4" href="#four"></a>
+      <a id="link-5" href="#five"></a>
+    </section>
+    <section aria-label="Offers">
+      <p id="buy-1" class="low">Buy one get one free</p>
+      <p id="buy-2" class="low">Free shipping over fifty</p>
+      <p id="buy-3" class="low">Members save ten percent</p>
+      <p id="buy-4" class="low">New arrivals every week</p>
+      <p id="buy-5" class="low">Gift cards available</p>
+    </section>
+    <section aria-label="Banners">
+      <p id="nr-1" class="over-image">Seasonal banner text</p>
+      <p id="nr-2" class="over-image">Clearance banner text</p>
+    </section>
+    <a id="next-page" class="next-page" href="other.html">Open fixture 2</a>
+  </main>
+</body>
+</html>
