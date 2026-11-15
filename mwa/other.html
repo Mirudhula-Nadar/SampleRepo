@@ -18,18 +18,17 @@
     <button id="cta" type="button"></button>
     <a id="next-page" class="next-page" href="basic.html">Back to fixture 1</a>
   </main>
-  <!-- Live pages keep changing after load; the Mobile WA agent scans a newly opened page on its
-       first DOM change, so this static fixture toggles a class on <main> (no visual or a11y effect)
-       every 2s for 5 minutes. -->
+  <!-- Live pages change after load; the Mobile WA agent scans a newly opened page on its first DOM
+       change, so this static fixture toggles a class on <main> (no visual or a11y effect) a few
+       times in its first 15 seconds, then stays still so scans and their scan_state reads stop. -->
   <script>
     (function () {
       var main = document.querySelector('main');
-      var ticks = 0;
-      var timer = setInterval(function () {
-        main.classList.toggle('tick');
-        ticks += 1;
-        if (ticks >= 150) clearInterval(timer);
-      }, 2000);
+      [1000, 2000, 4000, 6000, 9000, 12000, 15000].forEach(function (delay) {
+        setTimeout(function () {
+          main.classList.toggle('tick');
+        }, delay);
+      });
     })();
   </script>
 </body>
