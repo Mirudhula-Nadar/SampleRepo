@@ -19,8 +19,8 @@
     <a id="next-page" class="next-page" href="basic.html">Back to fixture 1</a>
   </main>
   <!-- Live pages keep changing after load; the Mobile WA agent scans a newly opened page on its
-       first DOM change, so this static fixture toggles a class on <main> (no visual or a11y effect)
-       every 2s for 5 minutes. -->
+       first DOM change once it is attached (2-35s after load in regression), so this static
+       fixture toggles a class on <main> (no visual or a11y effect) every 2s for 2 minutes. -->
   <script>
     (function () {
       var main = document.querySelector('main');
@@ -28,7 +28,7 @@
       var timer = setInterval(function () {
         main.classList.toggle('tick');
         ticks += 1;
-        if (ticks >= 150) clearInterval(timer);
+        if (ticks >= 60) clearInterval(timer);
       }, 2000);
     })();
   </script>
