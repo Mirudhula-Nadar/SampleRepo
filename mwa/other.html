@@ -18,11 +18,13 @@
     <button id="cta" type="button"></button>
     <a id="next-page" class="next-page" href="basic.html">Back to fixture 1</a>
   </main>
-  <!-- Live pages keep changing after load; the Mobile WA agent scans a newly opened page on its
-       first DOM change once it is attached (2-35s after load in regression), so this static
-       fixture toggles a class on <main> (no visual or a11y effect) every 2s for 2 minutes. -->
+  <!-- Live pages keep changing after load, and the Mobile WA agent scans a page reached by a link on
+       its first DOM change once it is attached (2-35s after load in regression). When this page is
+       reached by a link, it toggles a class on <main> (no visual or a11y effect) every 2s for 2
+       minutes. Opened directly (as a scan's start page), it stays still. -->
   <script>
     (function () {
+      if (!document.referrer) return;
       var main = document.querySelector('main');
       var ticks = 0;
       var timer = setInterval(function () {
