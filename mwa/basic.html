@@ -45,18 +45,5 @@
     </section>
     <a id="next-page" class="next-page" href="other.html">Open fixture 2</a>
   </main>
-  <!-- Live pages change after load; the Mobile WA agent scans a newly opened page on its first DOM
-       change, so this static fixture toggles a class on <main> (no visual or a11y effect) a few
-       times in its first 15 seconds, then stays still so scans and their scan_state reads stop. -->
-  <script>
-    (function () {
-      var main = document.querySelector('main');
-      [1000, 2000, 4000, 6000, 9000, 12000, 15000].forEach(function (delay) {
-        setTimeout(function () {
-          main.classList.toggle('tick');
-        }, delay);
-      });
-    })();
-  </script>
 </body>
 </html>
